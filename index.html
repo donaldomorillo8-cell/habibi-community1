@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habibi Community | All-in-One Platform</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .bg-image-fixed {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('image_f241c7.jpg');
+            background-size: cover; background-position: center; z-index: -1;
+        }
+        .overlay-dark {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(10, 10, 5, 0.80) 0%, rgba(5, 5, 2, 0.98) 100%);
+        }
+        .gold-glow:hover {
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.4);
+            border-color: rgba(234, 179, 8, 0.7);
+        }
+        .text-gold-glow { text-shadow: 0 0 12px rgba(234, 179, 8, 0.5); }
+    </style>
+</head>
+<body class="text-neutral-200 font-sans min-h-screen flex flex-col justify-between antialiased relative">
+
+    <div class="bg-image-fixed"><div class="overlay-dark"></div></div>
+
+    <!-- ========================================== -->
+    <!-- 1. PANTALLA DE ACCESO (LOGIN / REGISTRO)   -->
+    <!-- ========================================== -->
+    <div id="authSection" class="flex-1 flex items-center justify-center p-6 z-10">
+        <div class="bg-neutral-950/85 border border-yellow-600/30 p-8 rounded-3xl w-full max-w-md shadow-2xl relative backdrop-blur-xl">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600 text-gold-glow">HABIBI COMMUNITY</h1>
+                <p class="text-xs text-yellow-500/80 mt-1 uppercase tracking-widest font-bold">Bypass & Panel Emulator</p>
+            </div>
+
+            <!-- Formulario Login -->
+            <form id="loginForm" class="space-y-4">
+                <h2 class="text-base font-bold text-white uppercase tracking-wider flex items-center border-b border-neutral-800 pb-2"><i class="fa-solid fa-unlock-keyhole text-yellow-500 mr-2"></i> Autenticación</h2>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 uppercase tracking-wider">Usuario / Admin</label>
+                    <input type="text" id="loginUser" required placeholder="Tu usuario" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 uppercase tracking-wider">Contraseña</label>
+                    <input type="password" id="loginPass" required placeholder="••••••••" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer">Acceder</button>
+                <p class="text-xs text-center text-neutral-400 mt-4">¿Cliente nuevo? <button type="button" onclick="cambiarVistaAuth(true)" class="text-yellow-500 font-bold hover:underline cursor-pointer">Crea una cuenta</button></p>
+            </form>
+
+            <!-- Formulario Registro -->
+            <form id="registerForm" class="space-y-4 hidden">
+                <h2 class="text-base font-bold text-white uppercase tracking-wider flex items-center border-b border-neutral-800 pb-2"><i class="fa-solid fa-user-plus text-yellow-500 mr-2"></i> Registrar Licencia</h2>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 uppercase tracking-wider">Nombre de Usuario</label>
+                    <input type="text" id="regUser" required placeholder="Crea tu usuario" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 uppercase tracking-wider">Contraseña</label>
+                    <input type="password" id="regPass" required placeholder="Mínimo 4 caracteres" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer">Confirmar Registro</button>
+                <p class="text-xs text-center text-neutral-400 mt-4">¿Ya tienes cuenta? <button type="button" onclick="cambiarVistaAuth(false)" class="text-yellow-500 font-bold hover:underline cursor-pointer">Inicia sesión</button></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 2. PANTALLA DE TIENDA (VISTA CLIENTES)     -->
+    <!-- ========================================== -->
+    <div id="storeSection" class="w-full max-w-6xl mx-auto px-4 py-8 space-y-8 z-10 hidden">
+        <div class="flex justify-between items-center bg-neutral-950/85 border border-neutral-800 p-4 rounded-2xl backdrop-blur-md">
+            <div class="flex items-center space-x-3">
+                <div class="bg-yellow-500/10 p-2.5 rounded-xl border border-yellow-500/30"><i class="fa-solid fa-crosshairs text-xl text-yellow-500"></i></div>
+                <div>
+                    <h2 class="text-lg font-black text-white tracking-wider">HABIBI CLIENT STORE</h2>
+                    <p class="text-[11px] text-yellow-500 font-medium">Sesión: <span id="userLogged" class="font-bold text-white">PLAYER</span></p>
+                </div>
+            </div>
+            <button onclick="logout()" class="text-xs bg-neutral-900 border border-neutral-800 hover:bg-neutral-800 hover:text-yellow-500 px-4 py-2 rounded-xl font-bold transition cursor-pointer">Cerrar Sesión</button>
+        </div>
+
+        <div class="flex justify-center">
+            <div class="bg-neutral-950/90 p-1.5 rounded-2xl border border-neutral-800 flex space-x-2 w-full max-w-md">
+                <button onclick="cambiarProducto('bypass')" id="tabBypass" class="flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition bg-gradient-to-r from-yellow-600 to-amber-500 text-black cursor-pointer">Bypass PC</button>
+                <button onclick="cambiarProducto('panel')" id="tabPanel" class="flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition text-neutral-400 hover:text-white cursor-pointer">Panel VIP</button>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <h3 id="storeTitle" class="text-2xl font-black text-white tracking-wider text-gold-glow">Planes de Acceso Bypass</h3>
+        </div>
+        <div id="pricingGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"></div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 3. PANTALLA CONTROL OPERATIVO (ADMIN)       -->
+    <!-- ========================================== -->
+    <div id="adminSection" class="w-full max-w-6xl mx-auto px-4 py-8 space-y-6 z-10 hidden">
+        
+        <!-- Header Administrativo -->
+        <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/40 p-5 rounded-2xl backdrop-blur-md">
+            <div class="flex items-center space-x-3">
+                <div class="bg-yellow-500 text-black p-3 rounded-xl font-black">
+                    <i class="fa-solid fa-bolt text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-black text-white tracking-widest uppercase">Monitoreo de Clientes (Bypass & Panel)</h2>
+                    <p class="text-xs text-yellow-500 font-bold">Rastreador de Multicuentas y Logs de Actividad</p>
+                </div>
+            </div>
+            <button onclick="logoutAdmin()" class="text-xs bg-yellow-500 hover:bg-yellow-400 text-black font-black px-5 py-2.5 rounded-xl uppercase tracking-wider transition cursor-pointer">
+                Cerrar Sesión Root <i class="fa-solid fa-right-from-bracket ml-2"></i>
+            </button>
+        </div>
+
+        <!-- Métricas Rápidas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-neutral-950/80 border border-neutral-800 p-4 rounded-xl flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold text-neutral-400 uppercase">Cuentas Creadas Recientemente</p>
+                    <p id="totalUsersCount" class="text-2xl font-black text-yellow-500 mt-1">0</p>
+                </div>
+                <i class="fa-solid fa-users text-2xl text-neutral-700"></i>
+            </div>
+            <div class="bg-neutral-950/80 border border-neutral-800 p-4 rounded-xl flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold text-neutral-400 uppercase">Estado del Sistema</p>
+                    <p class="text-sm font-black text-emerald-400 mt-2 flex items-center">
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full inline-block mr-1.5 animate-pulse"></span> ESCANEANDO IPS ACTIVAS
+                    </p>
+                </div>
+                <i class="fa-solid fa-network-wired text-2xl text-neutral-700"></i>
+            </div>
+        </div>
+
+        <!-- Tabla Completa de Registros Recientes -->
+        <div class="bg-neutral-950/90 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl">
+            <div class="p-4 bg-neutral-900/60 border-b border-neutral-800 flex flex-col sm:flex-row justify-between items-center gap-2">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-white"><i class="fa-solid fa-database mr-2 text-yellow-500"></i> Registros de Licencias</h3>
+                <div class="relative w-full sm:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-neutral-500 text-xs"></i>
+                    <input type="text" id="adminSearch" oninput="buscarUsuario()" placeholder="Buscar por usuario o IP..." class="w-full pl-9 pr-4 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-xs focus:border-yellow-500 outline-none text-white">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="bg-neutral-900 text-neutral-400 uppercase tracking-wider font-bold border-b border-neutral-800">
+                            <th class="p-4">Usuario</th>
+                            <th class="p-4">Contraseña</th>
+                            <th class="p-4">Dirección IP</th>
+                            <th class="p-4">Conexión</th>
+                            <th class="p-4">Desconexión</th>
+                            <th class="p-4">Software Seleccionado</th>
+                            <th class="p-4 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUserTable" class="divide-y divide-neutral-900"></tbody>
+                </table>
+            </div>
+            <div id="emptyState" class="p-8 text-center text-neutral-500 hidden">No hay registros de clientes en esta temporada.</div>
+        </div>
+    </div>
+
+    <!-- FOOTER GENERAL -->
+    <footer class="w-full bg-neutral-950/90 border-t border-neutral-900 py-4 px-6 z-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
+        <p class="text-xs text-neutral-500">© 2026 Habibi Community. Módulo de Plataforma Unificado.</p>
+        <a id="footerDiscord" href="https://discord.gg/ky35xKgwt5" target="_blank" class="flex items-center space-x-2 bg-yellow-500 text-black px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider"><i class="fa-brands fa-discord"></i><span>Discord</span></a>
+    </footer>
+
+    <!-- LÓGICA CORE INTEGRADA -->
+    <script>
+        const listaPrecios = [
+            { tiempo: "07 Días", plan: "Pase Semanal", costo: "3 USDT", icono: "fa-bolt" },
+            { tiempo: "15 Días", plan: "Pase Quincenal", costo: "6 USDT", icono: "fa-shield" },
+            { tiempo: "30 Días", plan: "Pase Mensual", costo: "10 USDT", icono: "fa-crown" },
+            { tiempo: "60 Días", plan: "Pase Bimestral", costo: "15 USDT", icono: "fa-gem" },
+            { tiempo: "90 Días", plan: "Pase Trimestral", costo: "25 USDT", icono: "fa-fire" }
+        ];
+        let modoActual = 'bypass';
+        let usuarioSesionActual = '';
+
+        function cambiarVistaAuth(mostrarRegistro) {
+            document.getElementById('loginForm').classList.toggle('hidden', mostrarRegistro);
+            document.getElementById('registerForm').classList.toggle('hidden', !mostrarRegistro);
+        }
+
+        // REGISTRO DE USUARIOS NUEVOS
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const usuario = document.getElementById('regUser').value.trim();
+            const clave = document.getElementById('regPass').value.trim();
+            if(usuario.toLowerCase() === 'admin') return alert('Nombre reservado por el sistema.');
+
+            let usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
+            if (usuarios.some(u => u.username.toLowerCase() === usuario.toLowerCase())) return alert('El usuario ya existe.');
+
+            // Generar IP Ficticia para simulación de tracking multicuenta
+            const ipSimulada = `192.168.1.${Math.floor(Math.random() * 254) + 1}`;
+
+            usuarios.push({ 
+                username: usuario, 
+                pass: clave,
+                ip: ipSimulada,
+                loginTime: 'Ninguna',
+                logoutTime: 'Ninguna',
+                ultimaSeleccion: 'Ninguna (Solo Registro)'
+            });
+            
+            localStorage.setItem('database_users', JSON.stringify(usuarios));
+            alert('¡Cuenta creada correctamente! Procede a iniciar sesión.');
+            cambiarVistaAuth(false);
+            this.reset();
+        });
+
+        // CONTROL DE ACCESO (LOGIN DE AMBOS ROLES)
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+
+            // RUTA DIRECTA DEL ADMINISTRADOR
+            if (user.toLowerCase() === 'admin' && pass === '1234') {
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('adminSection').classList.remove('hidden');
+                cargarTablaLogins();
+                return;
+            }
+
+            // RUTA DE CLIENTES ORDINARIOS
+            let usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
+            let index = usuarios.findIndex(u => u.username.toLowerCase() === user.toLowerCase() && u.pass === pass);
+
+            if (index !== -1) {
+                const horaActual = new Date().toLocaleTimeString();
+                usuarios[index].loginTime = horaActual;
+                localStorage.setItem('database_users', JSON.stringify(usuarios));
+
+                usuarioSesionActual = usuarios[index].username;
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('storeSection').classList.remove('hidden');
+                document.getElementById('userLogged').innerText = user.toUpperCase();
+                renderizarTarjetas();
+            } else {
+                alert('Usuario o Contraseña incorrectos.');
+            }
+        });
+
+        // LOGOUT DE CLIENTE
+        function logout() {
+            if (usuarioSesionActual) {
+                let usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
+                let index = usuarios.findIndex(u => u.username === usuarioSesionActual);
+                if (index !== -1) {
+                    usuarios[index].logoutTime = new Date().toLocaleTimeString();
+                    localStorage.setItem('database_users', JSON.stringify(usuarios));
+                }
+            }
+            refrescarSecciones();
+        }
+
+        // LOGOUT DE ADMINISTRADOR
+        function logoutAdmin() {
+            refrescarSecciones();
+        }
+
+        function refrescarSecciones() {
+            usuarioSesionActual = '';
+            document.getElementById('storeSection').classList.add('hidden');
+            document.getElementById('adminSection').classList.add('hidden');
+            document.getElementById('authSection').classList.remove('hidden');
+            document.getElementById('loginForm').reset();
+            document.getElementById('registerForm').reset();
+        }
+
+        // CONTROL DE LA INTERFAZ DE TIENDA
+        function cambiarProducto(tipo) {
+            modoActual = tipo;
+            document.getElementById('tabBypass').className = tipo === 'bypass' ? "flex-1 py-3 rounded-xl font-black text-xs bg-gradient-to-r from-yellow-600 to-amber-500 text-black cursor-pointer" : "flex-1 py-3 rounded-xl font-black text-xs text-neutral-400 hover:text-white cursor-pointer";
+            document.getElementById('tabPanel').className = tipo === 'panel' ? "flex-1 py-3 rounded-xl font-black text-xs bg-gradient-to-r from-yellow-600 to-amber-500 text-black cursor-pointer" : "flex-1 py-3 rounded-xl font-black text-xs text-neutral-400 hover:text-white cursor-pointer";
+            document.getElementById('storeTitle').innerText = tipo === 'bypass' ? "Planes de Acceso Bypass" : "Planes de Acceso Panel VIP";
+            renderizarTarjetas();
+        }
+
+        function renderizarTarjetas() {
+            const grid = document.getElementById('pricingGrid'); grid.innerHTML = '';
+            listaPrecios.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-neutral-950/90 border border-neutral-800 gold-glow p-5 rounded-2xl text-center flex flex-col justify-between">
+                        <div class="space-y-2"><i class="fa-solid ${p.icono} text-yellow-500 text-lg"></i>
+                        <h4 class="font-black text-white text-xs uppercase">${p.plan}</h4><p class="text-[10px] text-neutral-400">${p.tiempo}</p>
+                        <div class="py-1 bg-neutral-900 border border-neutral-800 rounded-xl"><span class="text-sm font-black text-yellow-500">${p.costo}</span></div></div>
+                        <button onclick="registrarSeleccion('${p.plan}')" class="mt-4 w-full bg-yellow-500 text-black py-2 rounded-xl text-[11px] font-black uppercase transition hover:bg-yellow-400 cursor-pointer">Adquirir</button>
+                    </div>`;
+            });
+        }
+
+        // DETECTAR LA COMPRA/BOTÓN SELECCIONADO POR EL USUARIO
+        function registrarSeleccion(nombrePlan) {
+            let usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
+            let index = usuarios.findIndex(u => u.username === usuarioSesionActual);
+            
+            if (index !== -1) {
+                usuarios[index].ultimaSeleccion = `${modoActual.toUpperCase()}: ${nombrePlan}`;
+                localStorage.setItem('database_users', JSON.stringify(usuarios));
+            }
+
+            alert(`¡Solicitud enviada!\nHas seleccionado el [${nombrePlan}] de nuestro [${modoActual.toUpperCase()}].\n\nSerás redirigido a Discord para tu activación.`);
+            window.open('https://discord.gg/ky35xKgwt5', '_blank');
+        }
+
+        // ==========================================
+        // FUNCIONES EXCLUSIVAS DEL PANEL DE CONTROL
+        // ==========================================
+        function cargarTablaLogins() {
+            const tbody = document.getElementById('adminUserTable');
+            const emptyState = document.getElementById('emptyState');
+            tbody.innerHTML = '';
+
+            const usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
+            document.getElementById('totalUsersCount').innerText = usuarios.length;
+
+            if(usuarios.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            // Cuentas creadas recientemente salen arriba (Inverso)
+            usuarios.slice().reverse().forEach((user) => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-neutral-900/40 transition">
+                        <td class="p-4 font-black text-white text-sm"><i class="fa-solid fa-user-gear mr-2 text-yellow-500/60"></i>${user.username}</td>
+                        <td class="p-4 font-mono text-neutral-500">${user.pass}</td>
+                        <td class="p-4 font-mono text-yellow-500 font-bold bg-yellow-500/5">${user.ip || '0.0.0.0'}</td>
+                        <td class="p-4 text-emerald-400 font-bold"><i class="fa-regular fa-clock mr-1"></i> ${user.loginTime || 'Sin datos'}</td>
+                        <td class="p-4 text-red-400 font-bold"><i class="fa-regular fa-clock mr-1"></i> ${user.logoutTime || 'Sin datos'}</td>
+                        <td class="p-4">
+                            <span class="px-2.5 py-1 rounded-md text-[11px] font-black uppercase tracking-wide bg-neutral-900 text-amber-400 border border-neutral-800">
+                                ${user.ultimaSeleccion || 'Ninguna'}
+                            </span>
+                        </td>
+                        <td class="p-4 text-center">
+                            <button onclick="eliminarUsuario('${user.username}')" class="bg-neutral-900 border border-neutral-800 hover:text-red-400 hover:border-red-900 px-2.5 py-1.5 rounded-lg transition font-bold cursor-pointer">
+                                <i class="fa-solid fa-user-slash"></i> Banear
+                            </button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        function eliminarUsuario(username) {
+            if(confirm(`¿Deseas banear y eliminar permanentemente de la base de datos al usuario: "${username}"?`)) {
+                let usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
+                usuarios = usuarios.filter(u => u.username !== username);
+                localStorage.setItem('database_users', JSON.stringify(usuarios));
+                cargarTablaLogins();
+            }
+        }
+
+        function buscarUsuario() {
+            const query = document.getElementById('adminSearch').value.toLowerCase();
+            const trs = document.querySelectorAll('#adminUserTable tr');
+            trs.forEach(tr => {
+                tr.style.display = tr.innerText.toLowerCase().includes(query) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
