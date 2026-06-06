@@ -113,7 +113,7 @@
                 </div>
                 <div>
                     <h2 class="text-xl font-black text-white tracking-widest uppercase">Monitoreo de Clientes (Bypass & Panel)</h2>
-                    <p class="text-xs text-yellow-500 font-bold">Rastreador de Multicuentas y Logs de Actividad Real</p>
+                    <p class="text-xs text-yellow-500 font-bold">Logs de Actividad Real de Licencias</p>
                 </div>
             </div>
             <button onclick="logoutAdmin()" class="text-xs bg-yellow-500 hover:bg-yellow-400 text-black font-black px-5 py-2.5 rounded-xl uppercase tracking-wider transition cursor-pointer">
@@ -126,7 +126,7 @@
                 <h3 class="text-sm font-bold uppercase tracking-wider text-white"><i class="fa-solid fa-database mr-2 text-yellow-500"></i> Registros en la Nube</h3>
                 <div class="relative w-full sm:w-64">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-neutral-500 text-xs"></i>
-                    <input type="text" id="adminSearch" oninput="buscarUsuario()" placeholder="Buscar por usuario o IP..." class="w-full pl-9 pr-4 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-xs focus:border-yellow-500 outline-none text-white">
+                    <input type="text" id="adminSearch" oninput="buscarUsuario()" placeholder="Buscar por usuario..." class="w-full pl-9 pr-4 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-xs focus:border-yellow-500 outline-none text-white">
                 </div>
             </div>
 
@@ -136,7 +136,6 @@
                         <tr class="bg-neutral-900 text-neutral-400 uppercase tracking-wider font-bold border-b border-neutral-800">
                             <th class="p-4">Usuario</th>
                             <th class="p-4">Contraseña</th>
-                            <th class="p-4">Dirección IP Real</th>
                             <th class="p-4">Conexión</th>
                             <th class="p-4">Desconexión</th>
                             <th class="p-4">Software Seleccionado</th>
@@ -178,17 +177,7 @@
             document.getElementById('registerForm').classList.toggle('hidden', !mostrarRegistro);
         }
 
-        async function obtenerIPReal() {
-            try {
-                let respuesta = await fetch('https://api.ipify.org?format=json');
-                let datos = await respuesta.json();
-                return datos.ip;
-            } catch (error) {
-                return "127.0.0.1";
-            }
-        }
-
-        // CONTROLADOR DE REGISTRO OPTIMIZADO
+        // CONTROLADOR DE REGISTRO OPTIMIZADO (AJUSTADO A TU TABLA EXACTA)
         async function ejecutarRegistro() {
             const usuario = document.getElementById('regUser').value.trim();
             const clave = document.getElementById('regPass').value.trim();
@@ -196,7 +185,6 @@
             if (!usuario || !clave) return alert('Por favor, completa todos los campos.');
             if (usuario.toLowerCase() === 'admin') return alert('Nombre reservado por el sistema.');
 
-            // Oculta el texto por completo y activa la tuerquita giratoria
             document.getElementById('textRegister').classList.add('hidden');
             document.getElementById('spinnerRegister').classList.remove('hidden');
             document.getElementById('btnRegister').disabled = true;
@@ -213,12 +201,14 @@
                     return;
                 }
 
-                const ipReal = await obtenerIPReal();
+                // Generamos un ID de texto único para evitar el conflicto de ID nulo
+                const idUnico = 'usr_' + Math.random().toString(36).substr(2, 9);
 
+                // Insertamos respetando las columnas exactas que tienes en Supabase
                 const { error: errInsert } = await _supabase.from('usuarios').insert([{ 
+                    id: idUnico,
                     username: usuario, 
                     password: clave,
-                    ip: ipReal,
                     login_time: 'Ninguna',
                     logout_time: 'Ninguna',
                     ultima_seleccion: 'Ninguna (Solo Registro)'
@@ -235,7 +225,6 @@
             } catch (err) {
                 alert("Error crítico interno: " + err.message);
             } finally {
-                // Quita la tuerca y vuelve a poner el texto normal
                 document.getElementById('textRegister').classList.remove('hidden');
                 document.getElementById('spinnerRegister').classList.add('hidden');
                 document.getElementById('btnRegister').disabled = false;
@@ -249,7 +238,6 @@
 
             if (!user || !pass) return alert('Por favor, ingresa tus datos.');
 
-            // Oculta el texto por completo y activa la tuerquita giratoria
             document.getElementById('textLogin').classList.add('hidden');
             document.getElementById('spinnerLogin').classList.remove('hidden');
             document.getElementById('btnLogin').disabled = true;
@@ -259,7 +247,6 @@
                 document.getElementById('adminSection').classList.remove('hidden');
                 cargarTablaLogins();
                 
-                // Restablece el botón de login inmediatamente
                 document.getElementById('textLogin').classList.remove('hidden');
                 document.getElementById('spinnerLogin').classList.add('hidden');
                 document.getElementById('btnLogin').disabled = false;
@@ -276,9 +263,8 @@
 
                 if (usuarios && usuarios.length > 0) {
                     const horaActual = new Date().toLocaleTimeString();
-                    const ipReal = await obtenerIPReal();
                     
-                    await _supabase.from('usuarios').update({ login_time: horaActual, ip: ipReal }).eq('username', user);
+                    await _supabase.from('usuarios').update({ login_time: horaActual }).eq('username', user);
 
                     usuarioSesionActual = user;
                     document.getElementById('authSection').classList.add('hidden');
@@ -291,7 +277,6 @@
             } catch (e) {
                 alert('Fallo de red al intentar conectar.');
             } finally {
-                // Quita la tuerca y vuelve a poner el texto normal
                 document.getElementById('textLogin').classList.remove('hidden');
                 document.getElementById('spinnerLogin').classList.add('hidden');
                 document.getElementById('btnLogin').disabled = false;
@@ -350,7 +335,7 @@
             const emptyState = document.getElementById('emptyState');
             tbody.innerHTML = '';
 
-            let { data: usuarios } = await _supabase.from('usuarios').select('*').order('id', { ascending: false });
+            let { data: usuarios } = await _supabase.from('usuarios').select('*');
 
             if(!usuarios || usuarios.length === 0) {
                 emptyState.classList.remove('hidden');
@@ -363,7 +348,6 @@
                     <tr class="hover:bg-neutral-900/40 transition">
                         <td class="p-4 font-black text-white text-sm"><i class="fa-solid fa-user-gear mr-2 text-yellow-500/60"></i>${user.username}</td>
                         <td class="p-4 font-mono text-neutral-500">${user.password}</td>
-                        <td class="p-4 font-mono text-yellow-500 font-bold bg-yellow-500/5">${user.ip || '0.0.0.0'}</td>
                         <td class="p-4 text-emerald-400 font-bold"><i class="fa-regular fa-clock mr-1"></i> ${user.login_time || 'Sin datos'}</td>
                         <td class="p-4 text-red-400 font-bold"><i class="fa-regular fa-clock mr-1"></i> ${user.logout_time || 'Sin datos'}</td>
                         <td class="p-4">
