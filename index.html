@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habibi Community | Live Platform</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Script de Conexión Oficial de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .bg-image-fixed {
@@ -29,6 +32,9 @@
 
     <div class="bg-image-fixed"><div class="overlay-dark"></div></div>
 
+    <!-- ========================================== -->
+    <!-- 1. PANTALLA DE ACCESO (LOGIN / REGISTRO)   -->
+    <!-- ========================================== -->
     <div id="authSection" class="flex-1 flex items-center justify-center p-6 z-10">
         <div class="bg-neutral-950/85 border border-yellow-600/30 p-8 rounded-3xl w-full max-w-md shadow-2xl relative backdrop-blur-xl">
             <div class="text-center mb-8">
@@ -36,6 +42,7 @@
                 <p class="text-xs text-yellow-500/80 mt-1 uppercase tracking-widest font-bold">Bypass & Panel Premium</p>
             </div>
 
+            <!-- Formulario Login -->
             <div id="loginForm" class="space-y-4">
                 <h2 class="text-base font-bold text-white uppercase tracking-wider flex items-center border-b border-neutral-800 pb-2"><i class="fa-solid fa-unlock-keyhole text-yellow-500 mr-2"></i> Autenticación</h2>
                 <div>
@@ -47,6 +54,7 @@
                     <input type="password" id="loginPass" placeholder="••••••••" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
                 </div>
                 
+                <!-- Botón de Login con Carga Controlada -->
                 <button id="btnLogin" onclick="ejecutarLogin()" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer flex items-center justify-center min-h-[44px]">
                     <span id="textLogin">Acceder</span>
                     <i id="spinnerLogin" class="fa-solid fa-gear fa-spin text-lg hidden"></i>
@@ -55,6 +63,7 @@
                 <p class="text-xs text-center text-neutral-400 mt-4">¿Cliente nuevo? <button type="button" onclick="cambiarVistaAuth(true)" class="text-yellow-500 font-bold hover:underline cursor-pointer">Crea una cuenta</button></p>
             </div>
 
+            <!-- Formulario Registro -->
             <div id="registerForm" class="space-y-4 hidden">
                 <h2 class="text-base font-bold text-white uppercase tracking-wider flex items-center border-b border-neutral-800 pb-2"><i class="fa-solid fa-user-plus text-yellow-500 mr-2"></i> Registrar Licencia</h2>
                 <div>
@@ -66,6 +75,7 @@
                     <input type="password" id="regPass" placeholder="Mínimo 4 caracteres" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
                 </div>
                 
+                <!-- Botón de Registro con Carga Controlada -->
                 <button id="btnRegister" onclick="ejecutarRegistro()" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer flex items-center justify-center min-h-[44px]">
                     <span id="textRegister">Confirmar Registro</span>
                     <i id="spinnerRegister" class="fa-solid fa-gear fa-spin text-lg hidden"></i>
@@ -76,6 +86,9 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- 2. PANTALLA DE TIENDA (VISTA CLIENTES)     -->
+    <!-- ========================================== -->
     <div id="storeSection" class="w-full max-w-6xl mx-auto px-4 py-8 space-y-8 z-10 hidden">
         <div class="flex justify-between items-center bg-neutral-950/85 border border-neutral-800 p-4 rounded-2xl backdrop-blur-md">
             <div class="flex items-center space-x-3">
@@ -101,8 +114,12 @@
         <div id="pricingGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"></div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- 3. PANTALLA CONTROL OPERATIVO (ADMIN)       -->
+    <!-- ========================================== -->
     <div id="adminSection" class="w-full max-w-6xl mx-auto px-4 py-8 space-y-6 z-10 hidden">
         
+        <!-- Header Administrativo -->
         <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/40 p-5 rounded-2xl backdrop-blur-md">
             <div class="flex items-center space-x-3">
                 <div class="bg-yellow-500 text-black p-3 rounded-xl font-black">
@@ -118,6 +135,7 @@
             </button>
         </div>
 
+        <!-- Tabla Completa de Registros Recientes -->
         <div class="bg-neutral-950/90 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl">
             <div class="p-4 bg-neutral-900/60 border-b border-neutral-800 flex flex-col sm:flex-row justify-between items-center gap-2">
                 <h3 class="text-sm font-bold uppercase tracking-wider text-white"><i class="fa-solid fa-database mr-2 text-yellow-500"></i> Registros en la Nube</h3>
@@ -147,13 +165,16 @@
         </div>
     </div>
 
+    <!-- FOOTER GENERAL -->
     <footer class="w-full bg-neutral-950/90 border-t border-neutral-900 py-4 px-6 z-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
         <p class="text-xs text-neutral-500">© 2026 Habibi Community. Base de Datos Activa.</p>
         <a href="https://discord.gg/ky35xKgwt5" target="_blank" class="flex items-center space-x-2 bg-yellow-500 text-black px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider"><i class="fa-brands fa-discord"></i><span>Discord</span></a>
     </footer>
 
+    <!-- ========================================== -->
+    <!-- BLOQUE JAVASCRIPT TOTALMENTE OPERATIVO     -->
+    <!-- ========================================== -->
     <script>
-        // CONEXIÓN CON CREDENCIALES NATIIVAS
         const SUPABASE_URL = "https://hktwvbrwxakgriuldaip.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhrdHd2YnJ3eGFrZ3JpdWlkYWlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NDgxMDgsImV4cCI6MjA5NjMyNDEwOH0.EnPwcq3Wz-6P0HN9y7F8R3u6pFWXqyBC1_KZOhaNxms";
         
@@ -165,7 +186,7 @@
             { tiempo: "07 Días", plan: "Pase Semanal", costo: "3 USDT", icono: "fa-bolt" },
             { tiempo: "15 Días", plan: "Pase Quincenal", costo: "6 USDT", icono: "fa-shield" },
             { tiempo: "30 Días", plan: "Pase Mensual", costo: "10 USDT", icono: "fa-crown" },
-            { tiempo: "60 Días", plan: "Pase Bimestral", costo: "15 USDT", gem: "fa-gem" },
+            { tiempo: "60 Días", plan: "Pase Bimestral", costo: "15 USDT", icono: "fa-gem" },
             { tiempo: "90 Días", plan: "Pase Trimestral", costo: "25 USDT", icono: "fa-fire" }
         ];
         let modoActual = 'bypass';
@@ -186,7 +207,7 @@
             }
         }
 
-        // CONTROLADOR DE REGISTRO CON RUEDA DE ENGRANAJE
+        // CONTROLADOR DE REGISTRO OPTIMIZADO (SIEMPRE SE APAGA)
         async function ejecutarRegistro() {
             const usuario = document.getElementById('regUser').value.trim();
             const clave = document.getElementById('regPass').value.trim();
@@ -194,20 +215,21 @@
             if (!usuario || !clave) return alert('Por favor, completa todos los campos.');
             if (usuario.toLowerCase() === 'admin') return alert('Nombre reservado por el sistema.');
 
-            // ACTIVAR ANIMACIÓN (OCULTAR TEXTO, MOSTRAR TUERCA)
+            // Encender engranaje inmediatamente
             document.getElementById('textRegister').classList.add('hidden');
             document.getElementById('spinnerRegister').classList.remove('hidden');
             document.getElementById('btnRegister').disabled = true;
 
             try {
                 let { data: existentes, error: errCheck } = await _supabase.from('usuarios').select('username').eq('username', usuario);
+                
                 if (errCheck) {
-                    restaurarBotonRegistro();
-                    return alert('Error de conexión: ' + errCheck.message);
+                    alert('Error de conexión: ' + errCheck.message);
+                    return;
                 }
                 if (existentes && existentes.length > 0) {
-                    restaurarBotonRegistro();
-                    return alert('El usuario ya existe.');
+                    alert('El usuario ya existe.');
+                    return;
                 }
 
                 const ipReal = await obtenerIPReal();
@@ -232,24 +254,21 @@
             } catch (err) {
                 alert("Error crítico interno: " + err.message);
             } finally {
-                restaurarBotonRegistro();
+                // APAGAR ENGRANAJE AUTOMÁTICAMENTE PASE LO QUE PASE
+                document.getElementById('textRegister').classList.remove('hidden');
+                document.getElementById('spinnerRegister').classList.add('hidden');
+                document.getElementById('btnRegister').disabled = false;
             }
         }
 
-        function restaurarBotonRegistro() {
-            document.getElementById('textRegister').classList.remove('hidden');
-            document.getElementById('spinnerRegister').classList.add('hidden');
-            document.getElementById('btnRegister').disabled = false;
-        }
-
-        // CONTROLADOR DE LOGIN CON RUEDA DE ENGRANAJE
+        // CONTROLADOR DE LOGIN OPTIMIZADO (SIEMPRE SE APAGA)
         async function ejecutarLogin() {
             const user = document.getElementById('loginUser').value.trim();
             const pass = document.getElementById('loginPass').value.trim();
 
             if (!user || !pass) return alert('Por favor, ingresa tus datos.');
 
-            // ACTIVAR ANIMACIÓN (OCULTAR TEXTO, MOSTRAR TUERCA)
+            // Encender engranaje inmediatamente
             document.getElementById('textLogin').classList.add('hidden');
             document.getElementById('spinnerLogin').classList.remove('hidden');
             document.getElementById('btnLogin').disabled = true;
@@ -258,15 +277,20 @@
                 document.getElementById('authSection').classList.add('hidden');
                 document.getElementById('adminSection').classList.remove('hidden');
                 cargarTablaLogins();
-                restaurarBotonLogin();
+                
+                // Apagar engranaje de inmediato al entrar al panel root
+                document.getElementById('textLogin').classList.remove('hidden');
+                document.getElementById('spinnerLogin').classList.add('hidden');
+                document.getElementById('btnLogin').disabled = false;
                 return;
             }
 
             try {
                 let { data: usuarios, error: errLogin } = await _supabase.from('usuarios').select('*').eq('username', user).eq('password', pass);
+                
                 if (errLogin) {
-                    restaurarBotonLogin();
-                    return alert('Error de base de datos: ' + errLogin.message);
+                    alert('Error de base de datos: ' + errLogin.message);
+                    return;
                 }
 
                 if (usuarios && usuarios.length > 0) {
@@ -286,14 +310,11 @@
             } catch (e) {
                 alert('Fallo de red al intentar conectar.');
             } finally {
-                restaurarBotonLogin();
+                // APAGAR ENGRANAJE AUTOMÁTICAMENTE PASE LO QUE PASE
+                document.getElementById('textLogin').classList.remove('hidden');
+                document.getElementById('spinnerLogin').classList.add('hidden');
+                document.getElementById('btnLogin').disabled = false;
             }
-        }
-
-        function restaurarBotonLogin() {
-            document.getElementById('textLogin').classList.remove('hidden');
-            document.getElementById('spinnerLogin').classList.add('hidden');
-            document.getElementById('btnLogin').disabled = false;
         }
 
         async function logout() {
