@@ -46,7 +46,12 @@
                     <label class="block text-xs font-bold text-neutral-400 uppercase tracking-wider">Contraseña</label>
                     <input type="password" id="loginPass" placeholder="••••••••" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
                 </div>
-                <button onclick="ejecutarLogin()" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer">Acceder</button>
+                
+                <button id="btnLogin" onclick="ejecutarLogin()" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer flex items-center justify-center min-h-[44px]">
+                    <span id="textLogin">Acceder</span>
+                    <i id="spinnerLogin" class="fa-solid fa-gear fa-spin text-lg hidden"></i>
+                </button>
+                
                 <p class="text-xs text-center text-neutral-400 mt-4">¿Cliente nuevo? <button type="button" onclick="cambiarVistaAuth(true)" class="text-yellow-500 font-bold hover:underline cursor-pointer">Crea una cuenta</button></p>
             </div>
 
@@ -60,7 +65,12 @@
                     <label class="block text-xs font-bold text-neutral-400 uppercase tracking-wider">Contraseña</label>
                     <input type="password" id="regPass" placeholder="Mínimo 4 caracteres" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
                 </div>
-                <button onclick="ejecutarRegistro()" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer">Confirmar Registro</button>
+                
+                <button id="btnRegister" onclick="ejecutarRegistro()" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer flex items-center justify-center min-h-[44px]">
+                    <span id="textRegister">Confirmar Registro</span>
+                    <i id="spinnerRegister" class="fa-solid fa-gear fa-spin text-lg hidden"></i>
+                </button>
+                
                 <p class="text-xs text-center text-neutral-400 mt-4">¿Ya tienes cuenta? <button type="button" onclick="cambiarVistaAuth(false)" class="text-yellow-500 font-bold hover:underline cursor-pointer">Inicia sesión</button></p>
             </div>
         </div>
@@ -143,7 +153,7 @@
     </footer>
 
     <script>
-        // CONEXIÓN DEFINITIVA CON TUS CREDENCIALES
+        // CONEXIÓN CON CREDENCIALES NATIIVAS
         const SUPABASE_URL = "https://hktwvbrwxakgriuldaip.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhrdHd2YnJ3eGFrZ3JpdWlkYWlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NDgxMDgsImV4cCI6MjA5NjMyNDEwOH0.EnPwcq3Wz-6P0HN9y7F8R3u6pFWXqyBC1_KZOhaNxms";
         
@@ -155,7 +165,7 @@
             { tiempo: "07 Días", plan: "Pase Semanal", costo: "3 USDT", icono: "fa-bolt" },
             { tiempo: "15 Días", plan: "Pase Quincenal", costo: "6 USDT", icono: "fa-shield" },
             { tiempo: "30 Días", plan: "Pase Mensual", costo: "10 USDT", icono: "fa-crown" },
-            { tiempo: "60 Días", plan: "Pase Bimestral", costo: "15 USDT", icono: "fa-gem" },
+            { tiempo: "60 Días", plan: "Pase Bimestral", costo: "15 USDT", gem: "fa-gem" },
             { tiempo: "90 Días", plan: "Pase Trimestral", costo: "25 USDT", icono: "fa-fire" }
         ];
         let modoActual = 'bypass';
@@ -176,7 +186,7 @@
             }
         }
 
-        // CONTROLADOR DE REGISTRO ACTIVO
+        // CONTROLADOR DE REGISTRO CON RUEDA DE ENGRANAJE
         async function ejecutarRegistro() {
             const usuario = document.getElementById('regUser').value.trim();
             const clave = document.getElementById('regPass').value.trim();
@@ -184,10 +194,21 @@
             if (!usuario || !clave) return alert('Por favor, completa todos los campos.');
             if (usuario.toLowerCase() === 'admin') return alert('Nombre reservado por el sistema.');
 
+            // ACTIVAR ANIMACIÓN (OCULTAR TEXTO, MOSTRAR TUERCA)
+            document.getElementById('textRegister').classList.add('hidden');
+            document.getElementById('spinnerRegister').classList.remove('hidden');
+            document.getElementById('btnRegister').disabled = true;
+
             try {
                 let { data: existentes, error: errCheck } = await _supabase.from('usuarios').select('username').eq('username', usuario);
-                if (errCheck) return alert('Error de conexión: ' + errCheck.message);
-                if (existentes && existentes.length > 0) return alert('El usuario ya existe.');
+                if (errCheck) {
+                    restaurarBotonRegistro();
+                    return alert('Error de conexión: ' + errCheck.message);
+                }
+                if (existentes && existentes.length > 0) {
+                    restaurarBotonRegistro();
+                    return alert('El usuario ya existe.');
+                }
 
                 const ipReal = await obtenerIPReal();
 
@@ -210,26 +231,43 @@
                 }
             } catch (err) {
                 alert("Error crítico interno: " + err.message);
+            } finally {
+                restaurarBotonRegistro();
             }
         }
 
-        // CONTROLADOR DE LOGIN ACTIVO
+        function restaurarBotonRegistro() {
+            document.getElementById('textRegister').classList.remove('hidden');
+            document.getElementById('spinnerRegister').classList.add('hidden');
+            document.getElementById('btnRegister').disabled = false;
+        }
+
+        // CONTROLADOR DE LOGIN CON RUEDA DE ENGRANAJE
         async function ejecutarLogin() {
             const user = document.getElementById('loginUser').value.trim();
             const pass = document.getElementById('loginPass').value.trim();
 
             if (!user || !pass) return alert('Por favor, ingresa tus datos.');
 
+            // ACTIVAR ANIMACIÓN (OCULTAR TEXTO, MOSTRAR TUERCA)
+            document.getElementById('textLogin').classList.add('hidden');
+            document.getElementById('spinnerLogin').classList.remove('hidden');
+            document.getElementById('btnLogin').disabled = true;
+
             if (user.toLowerCase() === 'admin' && pass === '1234') {
                 document.getElementById('authSection').classList.add('hidden');
                 document.getElementById('adminSection').classList.remove('hidden');
                 cargarTablaLogins();
+                restaurarBotonLogin();
                 return;
             }
 
             try {
                 let { data: usuarios, error: errLogin } = await _supabase.from('usuarios').select('*').eq('username', user).eq('password', pass);
-                if (errLogin) return alert('Error de base de datos: ' + errLogin.message);
+                if (errLogin) {
+                    restaurarBotonLogin();
+                    return alert('Error de base de datos: ' + errLogin.message);
+                }
 
                 if (usuarios && usuarios.length > 0) {
                     const horaActual = new Date().toLocaleTimeString();
@@ -247,7 +285,15 @@
                 }
             } catch (e) {
                 alert('Fallo de red al intentar conectar.');
+            } finally {
+                restaurarBotonLogin();
             }
+        }
+
+        function restaurarBotonLogin() {
+            document.getElementById('textLogin').classList.remove('hidden');
+            document.getElementById('spinnerLogin').classList.add('hidden');
+            document.getElementById('btnLogin').disabled = false;
         }
 
         async function logout() {
@@ -282,7 +328,7 @@
             listaPrecios.forEach(p => {
                 grid.innerHTML += `
                     <div class="bg-neutral-950/90 border border-neutral-800 gold-glow p-5 rounded-2xl text-center flex flex-col justify-between">
-                        <div class="space-y-2"><i class="fa-solid ${p.icono} text-yellow-500 text-lg"></i>
+                        <div class="space-y-2"><i class="fa-solid ${p.icono || 'fa-bolt'} text-yellow-500 text-lg"></i>
                         <h4 class="font-black text-white text-xs uppercase">${p.plan}</h4><p class="text-[10px] text-neutral-400">${p.tiempo}</p>
                         <div class="py-1 bg-neutral-900 border border-neutral-800 rounded-xl"><span class="text-sm font-black text-yellow-500">${p.costo}</span></div></div>
                         <button onclick="registrarSeleccion('${p.plan}')" class="mt-4 w-full bg-yellow-500 text-black py-2 rounded-xl text-[11px] font-black uppercase transition hover:bg-yellow-400 cursor-pointer">Adquirir</button>
