@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habibi Community | Live Platform</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Script de Conexión de Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .bg-image-fixed {
@@ -29,6 +32,9 @@
 
     <div class="bg-image-fixed"><div class="overlay-dark"></div></div>
 
+    <!-- ========================================== -->
+    <!-- 1. PANTALLA DE ACCESO (LOGIN / REGISTRO)   -->
+    <!-- ========================================== -->
     <div id="authSection" class="flex-1 flex items-center justify-center p-6 z-10">
         <div class="bg-neutral-950/85 border border-yellow-600/30 p-8 rounded-3xl w-full max-w-md shadow-2xl relative backdrop-blur-xl">
             <div class="text-center mb-8">
@@ -36,6 +42,7 @@
                 <p class="text-xs text-yellow-500/80 mt-1 uppercase tracking-widest font-bold">Bypass & Panel Premium</p>
             </div>
 
+            <!-- Formulario Login -->
             <form id="loginForm" class="space-y-4">
                 <h2 class="text-base font-bold text-white uppercase tracking-wider flex items-center border-b border-neutral-800 pb-2"><i class="fa-solid fa-unlock-keyhole text-yellow-500 mr-2"></i> Autenticación</h2>
                 <div>
@@ -50,6 +57,7 @@
                 <p class="text-xs text-center text-neutral-400 mt-4">¿Cliente nuevo? <button type="button" onclick="cambiarVistaAuth(true)" class="text-yellow-500 font-bold hover:underline cursor-pointer">Crea una cuenta</button></p>
             </form>
 
+            <!-- Formulario Registro -->
             <form id="registerForm" class="space-y-4 hidden">
                 <h2 class="text-base font-bold text-white uppercase tracking-wider flex items-center border-b border-neutral-800 pb-2"><i class="fa-solid fa-user-plus text-yellow-500 mr-2"></i> Registrar Licencia</h2>
                 <div>
@@ -66,6 +74,9 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- 2. PANTALLA DE TIENDA (VISTA CLIENTES)     -->
+    <!-- ========================================== -->
     <div id="storeSection" class="w-full max-w-6xl mx-auto px-4 py-8 space-y-8 z-10 hidden">
         <div class="flex justify-between items-center bg-neutral-950/85 border border-neutral-800 p-4 rounded-2xl backdrop-blur-md">
             <div class="flex items-center space-x-3">
@@ -91,8 +102,12 @@
         <div id="pricingGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"></div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- 3. PANTALLA CONTROL OPERATIVO (ADMIN)       -->
+    <!-- ========================================== -->
     <div id="adminSection" class="w-full max-w-6xl mx-auto px-4 py-8 space-y-6 z-10 hidden">
         
+        <!-- Header Administrativo -->
         <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/40 p-5 rounded-2xl backdrop-blur-md">
             <div class="flex items-center space-x-3">
                 <div class="bg-yellow-500 text-black p-3 rounded-xl font-black">
@@ -108,6 +123,7 @@
             </button>
         </div>
 
+        <!-- Tabla Completa de Registros Recientes -->
         <div class="bg-neutral-950/90 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl">
             <div class="p-4 bg-neutral-900/60 border-b border-neutral-800 flex flex-col sm:flex-row justify-between items-center gap-2">
                 <h3 class="text-sm font-bold uppercase tracking-wider text-white"><i class="fa-solid fa-database mr-2 text-yellow-500"></i> Registros en la Nube</h3>
@@ -137,15 +153,17 @@
         </div>
     </div>
 
+    <!-- FOOTER GENERAL -->
     <footer class="w-full bg-neutral-950/90 border-t border-neutral-900 py-4 px-6 z-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
         <p class="text-xs text-neutral-500">© 2026 Habibi Community. Base de Datos Activa.</p>
         <a href="https://discord.gg/ky35xKgwt5" target="_blank" class="flex items-center space-x-2 bg-yellow-500 text-black px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider"><i class="fa-brands fa-discord"></i><span>Discord</span></a>
     </footer>
 
+    <!-- LÓGICA CORE INTEGRADA CON LAS LLAVES PROVISTAS -->
     <script>
-        // REEMPLAZA ESTOS DATOS CON LOS DE TU PROYECTO DE SUPABASE
-        const SUPABASE_URL = "TU_SUPABASE_URL";
-        const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY";
+        // CONFIGURACIÓN DE APIS INTEGRADA
+        const SUPABASE_URL = "sb_secret_t4tJS9aVWTDtuByG0RupkA_T90UJXEz";
+        const SUPABASE_ANON_KEY = "sb_publishable_dGNnKB80nlC2wSxT7-sVCQ_wVQo0rFX";
         
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
