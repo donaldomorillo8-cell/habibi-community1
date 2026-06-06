@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habibi Community | All-in-One Platform</title>
-    <!-- Tailwind CSS -->
+    <title>Habibi Community | Live Platform</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .bg-image-fixed {
             position: fixed;
@@ -30,17 +29,13 @@
 
     <div class="bg-image-fixed"><div class="overlay-dark"></div></div>
 
-    <!-- ========================================== -->
-    <!-- 1. PANTALLA DE ACCESO (LOGIN / REGISTRO)   -->
-    <!-- ========================================== -->
     <div id="authSection" class="flex-1 flex items-center justify-center p-6 z-10">
         <div class="bg-neutral-950/85 border border-yellow-600/30 p-8 rounded-3xl w-full max-w-md shadow-2xl relative backdrop-blur-xl">
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600 text-gold-glow">HABIBI COMMUNITY</h1>
-                <p class="text-xs text-yellow-500/80 mt-1 uppercase tracking-widest font-bold">Bypass & Panel Emulator</p>
+                <p class="text-xs text-yellow-500/80 mt-1 uppercase tracking-widest font-bold">Bypass & Panel Premium</p>
             </div>
 
-            <!-- Formulario Login -->
             <form id="loginForm" class="space-y-4">
                 <h2 class="text-base font-bold text-white uppercase tracking-wider flex items-center border-b border-neutral-800 pb-2"><i class="fa-solid fa-unlock-keyhole text-yellow-500 mr-2"></i> Autenticación</h2>
                 <div>
@@ -55,7 +50,6 @@
                 <p class="text-xs text-center text-neutral-400 mt-4">¿Cliente nuevo? <button type="button" onclick="cambiarVistaAuth(true)" class="text-yellow-500 font-bold hover:underline cursor-pointer">Crea una cuenta</button></p>
             </form>
 
-            <!-- Formulario Registro -->
             <form id="registerForm" class="space-y-4 hidden">
                 <h2 class="text-base font-bold text-white uppercase tracking-wider flex items-center border-b border-neutral-800 pb-2"><i class="fa-solid fa-user-plus text-yellow-500 mr-2"></i> Registrar Licencia</h2>
                 <div>
@@ -72,9 +66,6 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 2. PANTALLA DE TIENDA (VISTA CLIENTES)     -->
-    <!-- ========================================== -->
     <div id="storeSection" class="w-full max-w-6xl mx-auto px-4 py-8 space-y-8 z-10 hidden">
         <div class="flex justify-between items-center bg-neutral-950/85 border border-neutral-800 p-4 rounded-2xl backdrop-blur-md">
             <div class="flex items-center space-x-3">
@@ -100,12 +91,8 @@
         <div id="pricingGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"></div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 3. PANTALLA CONTROL OPERATIVO (ADMIN)       -->
-    <!-- ========================================== -->
     <div id="adminSection" class="w-full max-w-6xl mx-auto px-4 py-8 space-y-6 z-10 hidden">
         
-        <!-- Header Administrativo -->
         <div class="flex justify-between items-center bg-yellow-500/10 border border-yellow-500/40 p-5 rounded-2xl backdrop-blur-md">
             <div class="flex items-center space-x-3">
                 <div class="bg-yellow-500 text-black p-3 rounded-xl font-black">
@@ -113,7 +100,7 @@
                 </div>
                 <div>
                     <h2 class="text-xl font-black text-white tracking-widest uppercase">Monitoreo de Clientes (Bypass & Panel)</h2>
-                    <p class="text-xs text-yellow-500 font-bold">Rastreador de Multicuentas y Logs de Actividad</p>
+                    <p class="text-xs text-yellow-500 font-bold">Rastreador de Multicuentas y Logs de Actividad Real</p>
                 </div>
             </div>
             <button onclick="logoutAdmin()" class="text-xs bg-yellow-500 hover:bg-yellow-400 text-black font-black px-5 py-2.5 rounded-xl uppercase tracking-wider transition cursor-pointer">
@@ -121,30 +108,9 @@
             </button>
         </div>
 
-        <!-- Métricas Rápidas -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-neutral-950/80 border border-neutral-800 p-4 rounded-xl flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-bold text-neutral-400 uppercase">Cuentas Creadas Recientemente</p>
-                    <p id="totalUsersCount" class="text-2xl font-black text-yellow-500 mt-1">0</p>
-                </div>
-                <i class="fa-solid fa-users text-2xl text-neutral-700"></i>
-            </div>
-            <div class="bg-neutral-950/80 border border-neutral-800 p-4 rounded-xl flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-bold text-neutral-400 uppercase">Estado del Sistema</p>
-                    <p class="text-sm font-black text-emerald-400 mt-2 flex items-center">
-                        <span class="w-2 h-2 bg-emerald-500 rounded-full inline-block mr-1.5 animate-pulse"></span> ESCANEANDO IPS ACTIVAS
-                    </p>
-                </div>
-                <i class="fa-solid fa-network-wired text-2xl text-neutral-700"></i>
-            </div>
-        </div>
-
-        <!-- Tabla Completa de Registros Recientes -->
         <div class="bg-neutral-950/90 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl">
             <div class="p-4 bg-neutral-900/60 border-b border-neutral-800 flex flex-col sm:flex-row justify-between items-center gap-2">
-                <h3 class="text-sm font-bold uppercase tracking-wider text-white"><i class="fa-solid fa-database mr-2 text-yellow-500"></i> Registros de Licencias</h3>
+                <h3 class="text-sm font-bold uppercase tracking-wider text-white"><i class="fa-solid fa-database mr-2 text-yellow-500"></i> Registros en la Nube</h3>
                 <div class="relative w-full sm:w-64">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-neutral-500 text-xs"></i>
                     <input type="text" id="adminSearch" oninput="buscarUsuario()" placeholder="Buscar por usuario o IP..." class="w-full pl-9 pr-4 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-xs focus:border-yellow-500 outline-none text-white">
@@ -157,7 +123,7 @@
                         <tr class="bg-neutral-900 text-neutral-400 uppercase tracking-wider font-bold border-b border-neutral-800">
                             <th class="p-4">Usuario</th>
                             <th class="p-4">Contraseña</th>
-                            <th class="p-4">Dirección IP</th>
+                            <th class="p-4">Dirección IP Real</th>
                             <th class="p-4">Conexión</th>
                             <th class="p-4">Desconexión</th>
                             <th class="p-4">Software Seleccionado</th>
@@ -171,14 +137,18 @@
         </div>
     </div>
 
-    <!-- FOOTER GENERAL -->
     <footer class="w-full bg-neutral-950/90 border-t border-neutral-900 py-4 px-6 z-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
-        <p class="text-xs text-neutral-500">© 2026 Habibi Community. Módulo de Plataforma Unificado.</p>
-        <a id="footerDiscord" href="https://discord.gg/ky35xKgwt5" target="_blank" class="flex items-center space-x-2 bg-yellow-500 text-black px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider"><i class="fa-brands fa-discord"></i><span>Discord</span></a>
+        <p class="text-xs text-neutral-500">© 2026 Habibi Community. Base de Datos Activa.</p>
+        <a href="https://discord.gg/ky35xKgwt5" target="_blank" class="flex items-center space-x-2 bg-yellow-500 text-black px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider"><i class="fa-brands fa-discord"></i><span>Discord</span></a>
     </footer>
 
-    <!-- LÓGICA CORE INTEGRADA -->
     <script>
+        // REEMPLAZA ESTOS DATOS CON LOS DE TU PROYECTO DE SUPABASE
+        const SUPABASE_URL = "TU_SUPABASE_URL";
+        const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY";
+        
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         const listaPrecios = [
             { tiempo: "07 Días", plan: "Pase Semanal", costo: "3 USDT", icono: "fa-bolt" },
             { tiempo: "15 Días", plan: "Pase Quincenal", costo: "6 USDT", icono: "fa-shield" },
@@ -194,41 +164,55 @@
             document.getElementById('registerForm').classList.toggle('hidden', !mostrarRegistro);
         }
 
-        // REGISTRO DE USUARIOS NUEVOS
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        // FUNCIÓN AUXILIAR PARA OBTENER LA IP REAL DEL CLIENTE
+        async function obtenerIPReal() {
+            try {
+                let respuesta = await fetch('https://api.ipify.org?format=json');
+                let datos = await respuesta.json();
+                return datos.ip;
+            } catch (error) {
+                return "127.0.0.1";
+            }
+        }
+
+        // REGISTRO DE USUARIOS REAL EN LA NUBE
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const usuario = document.getElementById('regUser').value.trim();
             const clave = document.getElementById('regPass').value.trim();
             if(usuario.toLowerCase() === 'admin') return alert('Nombre reservado por el sistema.');
 
-            let usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
-            if (usuarios.some(u => u.username.toLowerCase() === usuario.toLowerCase())) return alert('El usuario ya existe.');
+            // Comprobar si ya existe en la base de datos
+            let { data: existentes } = await _supabase.from('usuarios').select('username').eq('username', usuario);
+            if (existentes && existentes.length > 0) return alert('El usuario ya existe.');
 
-            // Generar IP Ficticia para simulación de tracking multicuenta
-            const ipSimulada = `192.168.1.${Math.floor(Math.random() * 254) + 1}`;
+            const ipReal = await obtenerIPReal();
 
-            usuarios.push({ 
+            // Insertar en la tabla de Supabase
+            const { error } = await _supabase.from('usuarios').insert([{ 
                 username: usuario, 
-                pass: clave,
-                ip: ipSimulada,
-                loginTime: 'Ninguna',
-                logoutTime: 'Ninguna',
-                ultimaSeleccion: 'Ninguna (Solo Registro)'
-            });
-            
-            localStorage.setItem('database_users', JSON.stringify(usuarios));
-            alert('¡Cuenta creada correctamente! Procede a iniciar sesión.');
-            cambiarVistaAuth(false);
-            this.reset();
+                password: clave,
+                ip: ipReal,
+                login_time: 'Ninguna',
+                logout_time: 'Ninguna',
+                ultima_seleccion: 'Ninguna (Solo Registro)'
+            }]);
+
+            if(error) {
+                alert('Error al registrar en la base de datos.');
+            } else {
+                alert('¡Cuenta guardada en la nube con éxito! Inicia sesión.');
+                cambiarVistaAuth(false);
+                this.reset();
+            }
         });
 
-        // CONTROL DE ACCESO (LOGIN DE AMBOS ROLES)
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // INICIO DE SESIÓN COMPROBANDO LA BASE DE DATOS REAL
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const user = document.getElementById('loginUser').value.trim();
             const pass = document.getElementById('loginPass').value.trim();
 
-            // RUTA DIRECTA DEL ADMINISTRADOR
             if (user.toLowerCase() === 'admin' && pass === '1234') {
                 document.getElementById('authSection').classList.add('hidden');
                 document.getElementById('adminSection').classList.remove('hidden');
@@ -236,39 +220,40 @@
                 return;
             }
 
-            // RUTA DE CLIENTES ORDINARIOS
-            let usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
-            let index = usuarios.findIndex(u => u.username.toLowerCase() === user.toLowerCase() && u.pass === pass);
+            // Consultar en Supabase
+            let { data: usuarios, error } = await _supabase.from('usuarios')
+                .select('*')
+                .eq('username', user)
+                .eq('password', pass);
 
-            if (index !== -1) {
+            if (usuarios && usuarios.length > 0) {
                 const horaActual = new Date().toLocaleTimeString();
-                usuarios[index].loginTime = horaActual;
-                localStorage.setItem('database_users', JSON.stringify(usuarios));
+                const ipReal = await obtenerIPReal();
+                
+                // Actualizar hora de ingreso e IP por si cambió de red
+                await _supabase.from('usuarios')
+                    .update({ login_time: horaActual, ip: ipReal })
+                    .eq('username', user);
 
-                usuarioSesionActual = usuarios[index].username;
+                usuarioSesionActual = user;
                 document.getElementById('authSection').classList.add('hidden');
                 document.getElementById('storeSection').classList.remove('hidden');
                 document.getElementById('userLogged').innerText = user.toUpperCase();
                 renderizarTarjetas();
             } else {
-                alert('Usuario o Contraseña incorrectos.');
+                alert('Usuario o Contraseña incorrectos o inexistentes.');
             }
         });
 
-        // LOGOUT DE CLIENTE
-        function logout() {
+        // LOGOUT REAL
+        async function logout() {
             if (usuarioSesionActual) {
-                let usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
-                let index = usuarios.findIndex(u => u.username === usuarioSesionActual);
-                if (index !== -1) {
-                    usuarios[index].logoutTime = new Date().toLocaleTimeString();
-                    localStorage.setItem('database_users', JSON.stringify(usuarios));
-                }
+                const horaActual = new Date().toLocaleTimeString();
+                await _supabase.from('usuarios').update({ logout_time: horaActual }).eq('username', usuarioSesionActual);
             }
             refrescarSecciones();
         }
 
-        // LOGOUT DE ADMINISTRADOR
         function logoutAdmin() {
             refrescarSecciones();
         }
@@ -282,7 +267,6 @@
             document.getElementById('registerForm').reset();
         }
 
-        // CONTROL DE LA INTERFAZ DE TIENDA
         function cambiarProducto(tipo) {
             modoActual = tipo;
             document.getElementById('tabBypass').className = tipo === 'bypass' ? "flex-1 py-3 rounded-xl font-black text-xs bg-gradient-to-r from-yellow-600 to-amber-500 text-black cursor-pointer" : "flex-1 py-3 rounded-xl font-black text-xs text-neutral-400 hover:text-white cursor-pointer";
@@ -304,49 +288,43 @@
             });
         }
 
-        // DETECTAR LA COMPRA/BOTÓN SELECCIONADO POR EL USUARIO
-        function registrarSeleccion(nombrePlan) {
-            let usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
-            let index = usuarios.findIndex(u => u.username === usuarioSesionActual);
-            
-            if (index !== -1) {
-                usuarios[index].ultimaSeleccion = `${modoActual.toUpperCase()}: ${nombrePlan}`;
-                localStorage.setItem('database_users', JSON.stringify(usuarios));
-            }
+        // GUARDAR SELECCIÓN REAL EN LA BASE DE DATOS CENTRAL
+        async function registrarSeleccion(nombrePlan) {
+            const seleccionStr = `${modoActual.toUpperCase()}: ${nombrePlan}`;
+            await _supabase.from('usuarios').update({ ultima_seleccion: seleccionStr }).eq('username', usuarioSesionActual);
 
             alert(`¡Solicitud enviada!\nHas seleccionado el [${nombrePlan}] de nuestro [${modoActual.toUpperCase()}].\n\nSerás redirigido a Discord para tu activación.`);
             window.open('https://discord.gg/ky35xKgwt5', '_blank');
         }
 
         // ==========================================
-        // FUNCIONES EXCLUSIVAS DEL PANEL DE CONTROL
+        // VISTA DEL ADMINISTRADOR TOTALMENTE GLOBAL
         // ==========================================
-        function cargarTablaLogins() {
+        async function cargarTablaLogins() {
             const tbody = document.getElementById('adminUserTable');
             const emptyState = document.getElementById('emptyState');
             tbody.innerHTML = '';
 
-            const usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
-            document.getElementById('totalUsersCount').innerText = usuarios.length;
+            // Jalar todos los usuarios guardados en la nube ordenados por ID de forma descendente
+            let { data: usuarios, error } = await _supabase.from('usuarios').select('*').order('id', { ascending: false });
 
-            if(usuarios.length === 0) {
+            if(!usuarios || usuarios.length === 0) {
                 emptyState.classList.remove('hidden');
                 return;
             }
             emptyState.classList.add('hidden');
 
-            // Cuentas creadas recientemente salen arriba (Inverso)
-            usuarios.slice().reverse().forEach((user) => {
+            usuarios.forEach((user) => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-neutral-900/40 transition">
                         <td class="p-4 font-black text-white text-sm"><i class="fa-solid fa-user-gear mr-2 text-yellow-500/60"></i>${user.username}</td>
-                        <td class="p-4 font-mono text-neutral-500">${user.pass}</td>
+                        <td class="p-4 font-mono text-neutral-500">${user.password}</td>
                         <td class="p-4 font-mono text-yellow-500 font-bold bg-yellow-500/5">${user.ip || '0.0.0.0'}</td>
-                        <td class="p-4 text-emerald-400 font-bold"><i class="fa-regular fa-clock mr-1"></i> ${user.loginTime || 'Sin datos'}</td>
-                        <td class="p-4 text-red-400 font-bold"><i class="fa-regular fa-clock mr-1"></i> ${user.logoutTime || 'Sin datos'}</td>
+                        <td class="p-4 text-emerald-400 font-bold"><i class="fa-regular fa-clock mr-1"></i> ${user.login_time || 'Sin datos'}</td>
+                        <td class="p-4 text-red-400 font-bold"><i class="fa-regular fa-clock mr-1"></i> ${user.logout_time || 'Sin datos'}</td>
                         <td class="p-4">
                             <span class="px-2.5 py-1 rounded-md text-[11px] font-black uppercase tracking-wide bg-neutral-900 text-amber-400 border border-neutral-800">
-                                ${user.ultimaSeleccion || 'Ninguna'}
+                                ${user.ultima_seleccion || 'Ninguna'}
                             </span>
                         </td>
                         <td class="p-4 text-center">
@@ -358,11 +336,9 @@
             });
         }
 
-        function eliminarUsuario(username) {
-            if(confirm(`¿Deseas banear y eliminar permanentemente de la base de datos al usuario: "${username}"?`)) {
-                let usuarios = JSON.parse(localStorage.getItem('database_users')) || [];
-                usuarios = usuarios.filter(u => u.username !== username);
-                localStorage.setItem('database_users', JSON.stringify(usuarios));
+        async function eliminarUsuario(username) {
+            if(confirm(`¿Deseas banear y eliminar permanentemente de la nube al usuario: "${username}"?`)) {
+                await _supabase.from('usuarios').delete().eq('username', username);
                 cargarTablaLogins();
             }
         }
