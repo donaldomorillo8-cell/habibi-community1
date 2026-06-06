@@ -36,33 +36,33 @@
                 <p class="text-xs text-yellow-500/80 mt-1 uppercase tracking-widest font-bold">Bypass & Panel Premium</p>
             </div>
 
-            <form id="loginForm" class="space-y-4">
+            <div id="loginForm" class="space-y-4">
                 <h2 class="text-base font-bold text-white uppercase tracking-wider flex items-center border-b border-neutral-800 pb-2"><i class="fa-solid fa-unlock-keyhole text-yellow-500 mr-2"></i> Autenticación</h2>
                 <div>
                     <label class="block text-xs font-bold text-neutral-400 uppercase tracking-wider">Usuario / Admin</label>
-                    <input type="text" id="loginUser" required placeholder="Tu usuario" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
+                    <input type="text" id="loginUser" placeholder="Tu usuario" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-neutral-400 uppercase tracking-wider">Contraseña</label>
-                    <input type="password" id="loginPass" required placeholder="••••••••" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
+                    <input type="password" id="loginPass" placeholder="••••••••" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer">Acceder</button>
+                <button onclick="ejecutarLogin()" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer">Acceder</button>
                 <p class="text-xs text-center text-neutral-400 mt-4">¿Cliente nuevo? <button type="button" onclick="cambiarVistaAuth(true)" class="text-yellow-500 font-bold hover:underline cursor-pointer">Crea una cuenta</button></p>
-            </form>
+            </div>
 
-            <form id="registerForm" class="space-y-4 hidden">
+            <div id="registerForm" class="space-y-4 hidden">
                 <h2 class="text-base font-bold text-white uppercase tracking-wider flex items-center border-b border-neutral-800 pb-2"><i class="fa-solid fa-user-plus text-yellow-500 mr-2"></i> Registrar Licencia</h2>
                 <div>
                     <label class="block text-xs font-bold text-neutral-400 uppercase tracking-wider">Nombre de Usuario</label>
-                    <input type="text" id="regUser" required placeholder="Crea tu usuario" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
+                    <input type="text" id="regUser" placeholder="Crea tu usuario" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-neutral-400 uppercase tracking-wider">Contraseña</label>
-                    <input type="password" id="regPass" required placeholder="Mínimo 4 caracteres" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
+                    <input type="password" id="regPass" placeholder="Mínimo 4 caracteres" class="w-full mt-1 p-3 bg-neutral-900/90 border border-neutral-800 rounded-xl text-sm focus:border-yellow-500 outline-none text-white transition">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer">Confirmar Registro</button>
+                <button onclick="ejecutarRegistro()" class="w-full bg-gradient-to-r from-yellow-600 to-amber-500 hover:from-yellow-500 hover:to-amber-400 text-black font-black py-3 rounded-xl text-xs uppercase tracking-widest transition cursor-pointer">Confirmar Registro</button>
                 <p class="text-xs text-center text-neutral-400 mt-4">¿Ya tienes cuenta? <button type="button" onclick="cambiarVistaAuth(false)" class="text-yellow-500 font-bold hover:underline cursor-pointer">Inicia sesión</button></p>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -143,11 +143,13 @@
     </footer>
 
     <script>
-        // CONFIGURACIÓN DE APIS INTEGRADA ORIGINAL
+        // CONEXIÓN DEFINITIVA CON TUS CREDENCIALES
         const SUPABASE_URL = "https://hktwvbrwxakgriuldaip.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhrdHd2YnJ3eGFrZ3JpdWlkYWlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NDgxMDgsImV4cCI6MjA5NjMyNDEwOH0.EnPwcq3Wz-6P0HN9y7F8R3u6pFWXqyBC1_KZOhaNxms";
         
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: { persistSession: false, autoRefreshToken: false }
+        });
 
         const listaPrecios = [
             { tiempo: "07 Días", plan: "Pase Semanal", costo: "3 USDT", icono: "fa-bolt" },
@@ -164,7 +166,6 @@
             document.getElementById('registerForm').classList.toggle('hidden', !mostrarRegistro);
         }
 
-        // FUNCIÓN AUXILIAR PARA OBTENER LA IP REAL DEL CLIENTE
         async function obtenerIPReal() {
             try {
                 let respuesta = await fetch('https://api.ipify.org?format=json');
@@ -175,43 +176,49 @@
             }
         }
 
-        // REGISTRO DE USUARIOS REAL EN LA NUBE
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // CONTROLADOR DE REGISTRO ACTIVO
+        async function ejecutarRegistro() {
             const usuario = document.getElementById('regUser').value.trim();
             const clave = document.getElementById('regPass').value.trim();
-            if(usuario.toLowerCase() === 'admin') return alert('Nombre reservado por el sistema.');
 
-            // Comprobar si ya existe en la base de datos
-            let { data: existentes } = await _supabase.from('usuarios').select('username').eq('username', usuario);
-            if (existentes && existentes.length > 0) return alert('El usuario ya existe.');
+            if (!usuario || !clave) return alert('Por favor, completa todos los campos.');
+            if (usuario.toLowerCase() === 'admin') return alert('Nombre reservado por el sistema.');
 
-            const ipReal = await obtenerIPReal();
+            try {
+                let { data: existentes, error: errCheck } = await _supabase.from('usuarios').select('username').eq('username', usuario);
+                if (errCheck) return alert('Error de conexión: ' + errCheck.message);
+                if (existentes && existentes.length > 0) return alert('El usuario ya existe.');
 
-            // Insertar en la tabla de Supabase
-            const { error } = await _supabase.from('usuarios').insert([{ 
-                username: usuario, 
-                password: clave,
-                ip: ipReal,
-                login_time: 'Ninguna',
-                logout_time: 'Ninguna',
-                ultima_seleccion: 'Ninguna (Solo Registro)'
-            }]);
+                const ipReal = await obtenerIPReal();
 
-            if(error) {
-                alert('Error al registrar en la base de datos.');
-            } else {
-                alert('¡Cuenta guardada en la nube con éxito! Inicia sesión.');
-                cambiarVistaAuth(false);
-                this.reset();
+                const { error: errInsert } = await _supabase.from('usuarios').insert([{ 
+                    username: usuario, 
+                    password: clave,
+                    ip: ipReal,
+                    login_time: 'Ninguna',
+                    logout_time: 'Ninguna',
+                    ultima_seleccion: 'Ninguna (Solo Registro)'
+                }]);
+
+                if (errInsert) {
+                    alert('Error en base de datos: ' + errInsert.message);
+                } else {
+                    alert('¡Cuenta guardada en la nube con éxito! Inicia sesión.');
+                    cambiarVistaAuth(false);
+                    document.getElementById('regUser').value = '';
+                    document.getElementById('regPass').value = '';
+                }
+            } catch (err) {
+                alert("Error crítico interno: " + err.message);
             }
-        });
+        }
 
-        // INICIO DE SESIÓN COMPROBANDO LA BASE DE DATOS REAL
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // CONTROLADOR DE LOGIN ACTIVO
+        async function ejecutarLogin() {
             const user = document.getElementById('loginUser').value.trim();
             const pass = document.getElementById('loginPass').value.trim();
+
+            if (!user || !pass) return alert('Por favor, ingresa tus datos.');
 
             if (user.toLowerCase() === 'admin' && pass === '1234') {
                 document.getElementById('authSection').classList.add('hidden');
@@ -220,32 +227,29 @@
                 return;
             }
 
-            // Consultar en Supabase
-            let { data: usuarios, error } = await _supabase.from('usuarios')
-                .select('*')
-                .eq('username', user)
-                .eq('password', pass);
+            try {
+                let { data: usuarios, error: errLogin } = await _supabase.from('usuarios').select('*').eq('username', user).eq('password', pass);
+                if (errLogin) return alert('Error de base de datos: ' + errLogin.message);
 
-            if (usuarios && usuarios.length > 0) {
-                const horaActual = new Date().toLocaleTimeString();
-                const ipReal = await obtenerIPReal();
-                
-                // Actualizar hora de ingreso e IP por si cambió de red
-                await _supabase.from('usuarios')
-                    .update({ login_time: horaActual, ip: ipReal })
-                    .eq('username', user);
+                if (usuarios && usuarios.length > 0) {
+                    const horaActual = new Date().toLocaleTimeString();
+                    const ipReal = await obtenerIPReal();
+                    
+                    await _supabase.from('usuarios').update({ login_time: horaActual, ip: ipReal }).eq('username', user);
 
-                usuarioSesionActual = user;
-                document.getElementById('authSection').classList.add('hidden');
-                document.getElementById('storeSection').classList.remove('hidden');
-                document.getElementById('userLogged').innerText = user.toUpperCase();
-                renderizarTarjetas();
-            } else {
-                alert('Usuario o Contraseña incorrectos o inexistentes.');
+                    usuarioSesionActual = user;
+                    document.getElementById('authSection').classList.add('hidden');
+                    document.getElementById('storeSection').classList.remove('hidden');
+                    document.getElementById('userLogged').innerText = user.toUpperCase();
+                    renderizarTarjetas();
+                } else {
+                    alert('Usuario o Contraseña incorrectos.');
+                }
+            } catch (e) {
+                alert('Fallo de red al intentar conectar.');
             }
-        });
+        }
 
-        // LOGOUT REAL
         async function logout() {
             if (usuarioSesionActual) {
                 const horaActual = new Date().toLocaleTimeString();
@@ -254,17 +258,15 @@
             refrescarSecciones();
         }
 
-        function logoutAdmin() {
-            refrescarSecciones();
-        }
+        function logoutAdmin() { refrescarSecciones(); }
 
         function refrescarSecciones() {
             usuarioSesionActual = '';
             document.getElementById('storeSection').classList.add('hidden');
             document.getElementById('adminSection').classList.add('hidden');
             document.getElementById('authSection').classList.remove('hidden');
-            document.getElementById('loginForm').reset();
-            document.getElementById('registerForm').reset();
+            document.getElementById('loginUser').value = '';
+            document.getElementById('loginPass').value = '';
         }
 
         function cambiarProducto(tipo) {
@@ -288,25 +290,19 @@
             });
         }
 
-        // GUARDAR SELECCIÓN REAL EN LA BASE DE DATOS CENTRAL
         async function registrarSeleccion(nombrePlan) {
             const seleccionStr = `${modoActual.toUpperCase()}: ${nombrePlan}`;
             await _supabase.from('usuarios').update({ ultima_seleccion: seleccionStr }).eq('username', usuarioSesionActual);
-
             alert(`¡Solicitud enviada!\nHas seleccionado el [${nombrePlan}] de nuestro [${modoActual.toUpperCase()}].\n\nSerás redirigido a Discord para tu activación.`);
             window.open('https://discord.gg/ky35xKgwt5', '_blank');
         }
 
-        // ==========================================
-        // VISTA DEL ADMINISTRADOR TOTALMENTE GLOBAL
-        // ==========================================
         async function cargarTablaLogins() {
             const tbody = document.getElementById('adminUserTable');
             const emptyState = document.getElementById('emptyState');
             tbody.innerHTML = '';
 
-            // Jalar todos los usuarios guardados en la nube ordenados por ID de forma descendente
-            let { data: usuarios, error } = await _supabase.from('usuarios').select('*').order('id', { ascending: false });
+            let { data: usuarios } = await _supabase.from('usuarios').select('*').order('id', { ascending: false });
 
             if(!usuarios || usuarios.length === 0) {
                 emptyState.classList.remove('hidden');
